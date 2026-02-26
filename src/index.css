@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+  
+  --color-purp-deep: #8B5A96;
+  --color-purp-light: #A374B5;
+  --color-rose-soft: #E8C4D8;
+  --color-beige-cream: #F5F1EB;
+  --color-gold-subtle: #D4AF37;
+  --color-text-gray: #2D2D2D;
+}
+
+@layer base {
+  body {
+    @apply font-sans text-text-gray bg-white;
+  }
+  
+  h1, h2, h3, h4 {
+    @apply font-sans tracking-tight;
+  }
+}
+
+.gradient-purp {
+  background: linear-gradient(135deg, #8B5A96 0%, #A374B5 100%);
+}
+
+.gradient-rose-purp {
+  background: linear-gradient(135deg, #E8C4D8 0%, #A374B5 100%);
+}
+
+.gradient-soft {
+  background: linear-gradient(135deg, #E8C4D8 0%, #F5F1EB 100%);
+}
+
+.shadow-purp {
+  box-shadow: 0 8px 25px rgba(139, 90, 150, 0.3);
+}
+
+.card-shadow {
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.accordion-item.active .accordion-content {
+  max-height: 500px;
+}
