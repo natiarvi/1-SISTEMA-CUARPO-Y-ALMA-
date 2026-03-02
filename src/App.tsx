@@ -169,11 +169,68 @@ const StickyCTA = () => {
   );
 };
 
+const PurchaseNotification = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [currentName, setCurrentName] = useState('Andrea');
+  const names = ['Andrea', 'Lucía', 'Valentina', 'Isabella', 'Camila', 'Sofía', 'Mariana'];
+
+  React.useEffect(() => {
+    const showNext = () => {
+      const randomName = names[Math.floor(Math.random() * names.length)];
+      setCurrentName(randomName);
+      setIsVisible(true);
+      
+      setTimeout(() => {
+        setIsVisible(false);
+      }, 7000);
+    };
+
+    // Initial delay
+    const initialTimer = setTimeout(showNext, 5000);
+    
+    // Cycle every 25 seconds
+    const interval = setInterval(showNext, 25000);
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(interval);
+    };
+  }, []);
+
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ x: -100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -100, opacity: 0 }}
+          className="fixed bottom-24 left-4 z-50 flex items-center gap-3 rounded-2xl bg-white p-4 shadow-2xl border border-purp-light/20 md:bottom-8 md:left-8"
+        >
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purp-light/10 text-purp-deep">
+            <Sparkles size={20} />
+          </div>
+          <div>
+            <p className="text-sm font-bold text-purp-deep">¡{currentName} acaba de dar el primer paso hacia su despertar! ✨</p>
+            <p className="text-[10px] text-text-gray/60 uppercase tracking-widest">Se unió a la comunidad hace unos instantes</p>
+          </div>
+          <button 
+            onClick={() => setIsVisible(false)}
+            className="ml-2 text-text-gray/40 hover:text-text-gray/60"
+          >
+            <XCircle size={16} />
+          </button>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
 export default function App() {
   return (
     <div className="min-h-screen">
       {/* 1. HERO SECTION */}
       <StickyCTA />
+      <PurchaseNotification />
       <section className="gradient-purp relative overflow-hidden px-6 py-20 text-white md:py-32">
         <div className="absolute inset-0 opacity-10">
           <img 
@@ -292,7 +349,39 @@ export default function App() {
         </div>
       </section>
 
-      {/* 6. SOCIAL PROOF */}
+      {/* 6. DELIVERABLES */}
+      <section className="gradient-purp px-6 py-20 text-white">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="mb-16 text-center text-3xl font-bold md:text-4xl">Sistema Completo de Transformación Cuerpo & Alma:</h2>
+          
+          <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              { title: "Libro Principal: 'Cuerpo & Alma'", desc: "La guía maestra con el sistema completo de transformación paso a paso.", img: ASSETS.mainBook },
+              { title: "'Presencia en 5 Minutos'", desc: "Manual de meditaciones para el despertar (perfectas para tu rutina ocupada)", img: ASSETS.bonus1 },
+              { title: "'Los 8 Pilares del Ser Consciente'", desc: "Los fundamentos sólidos para construir tu nueva relación contigo misma", img: ASSETS.bonus2 },
+              { title: "'Mantras Cuerpo & Alma'", desc: "50 decretos de transformación para reprogramar tu diálogo interno", img: ASSETS.deliverableMantras },
+              { title: "'El Arte Sagrado de Nutrir tu Templo'", desc: "Alimentación consciente sin restricciones ni culpas", img: ASSETS.deliverableNutrir },
+              { title: "'Mi Diario de Alquimia Personal'", desc: "Tu compañero íntimo para documentar y acelerar tu transformación.", img: ASSETS.bonus3 },
+              { title: "'Los 5 Portales: Despertar a través de los Sentidos'", desc: "Técnicas avanzadas para usar tus sentidos como puertas de presencia.", img: ASSETS.deliverablePortales },
+              { title: "'Carta de Amor a Mi Cuerpo'", desc: "El perdón que sana y transforma tu relación corporal para siempre.", img: ASSETS.deliverableCarta },
+            ].map((item, i) => (
+              <motion.div 
+                key={i}
+                whileHover={{ y: -10 }}
+                className="flex flex-col overflow-hidden rounded-2xl bg-white/10 backdrop-blur-sm"
+              >
+                <img src={item.img} alt={item.title} className="h-64 w-full object-cover" referrerPolicy="no-referrer" />
+                <div className="p-6">
+                  <h4 className="text-lg font-bold">{item.title}</h4>
+                  <p className="mt-2 text-sm text-white/70">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 7. SOCIAL PROOF */}
       <section className="bg-purp-light/10 px-6 py-20">
         <div className="mx-auto max-w-5xl">
           <h2 className="mb-12 text-center text-3xl font-bold text-purp-deep md:text-4xl">💫 Lo Que Dicen Nuestras Alumnas:</h2>
@@ -335,33 +424,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* 7. GUARANTEE */}
-      <section className="bg-beige-cream px-6 py-24 text-center">
-        <motion.div 
-          initial={{ scale: 0.9, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true }}
-          className="mx-auto max-w-3xl rounded-[2rem] bg-white p-12 shadow-2xl border border-gold-subtle/20"
-        >
-          <div className="mx-auto mb-8 flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-gold-subtle to-gold-subtle/50 p-1 shadow-xl">
-            <div className="flex h-full w-full items-center justify-center rounded-full bg-white">
-              <ShieldCheck size={56} className="text-gold-subtle" />
-            </div>
-          </div>
-          <h2 className="text-3xl font-bold text-purp-deep md:text-4xl">Garantía "Conexión Total" de 7 Días</h2>
-          <p className="mt-8 text-xl leading-relaxed text-text-gray/80">
-            Si en los primeros 7 días no sientes una conexión más profunda contigo misma, te devuelvo cada centavo. <span className="font-bold text-purp-deep">Sin preguntas, sin complicaciones, sin resentimientos.</span>
-          </p>
-          <div className="mt-10 flex flex-col items-center gap-4">
-            <div className="h-px w-20 bg-gold-subtle/30"></div>
-            <p className="font-serif text-2xl italic text-purp-light">
-              "Es mi compromiso personal contigo porque sé que este sistema funciona."
-            </p>
-            <p className="text-sm font-bold uppercase tracking-widest text-text-gray/40">— Vioalma</p>
-          </div>
-        </motion.div>
-      </section>
-
       {/* 8. NOT FOR YOU IF */}
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-3xl rounded-3xl border-2 border-dashed border-red-100 bg-red-50/30 p-8 md:p-12">
@@ -390,39 +452,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 9. DELIVERABLES */}
-      <section className="gradient-purp px-6 py-20 text-white">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-16 text-center text-3xl font-bold md:text-4xl">Sistema Completo de Transformación Cuerpo & Alma:</h2>
-          
-          <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
-            {[
-              { title: "Libro Principal: 'Cuerpo & Alma'", desc: "La guía maestra con el sistema completo de transformación paso a paso.", img: ASSETS.mainBook },
-              { title: "'Presencia en 5 Minutos'", desc: "Manual de meditaciones para el despertar (perfectas para tu rutina ocupada)", img: ASSETS.bonus1 },
-              { title: "'Los 8 Pilares del Ser Consciente'", desc: "Los fundamentos sólidos para construir tu nueva relación contigo misma", img: ASSETS.bonus2 },
-              { title: "'Mantras Cuerpo & Alma'", desc: "50 decretos de transformación para reprogramar tu diálogo interno", img: ASSETS.deliverableMantras },
-              { title: "'El Arte Sagrado de Nutrir tu Templo'", desc: "Alimentación consciente sin restricciones ni culpas", img: ASSETS.deliverableNutrir },
-              { title: "'Mi Diario de Alquimia Personal'", desc: "Tu compañero íntimo para documentar y acelerar tu transformación.", img: ASSETS.bonus3 },
-              { title: "'Los 5 Portales: Despertar a través de los Sentidos'", desc: "Técnicas avanzadas para usar tus sentidos como puertas de presencia.", img: ASSETS.deliverablePortales },
-              { title: "'Carta de Amor a Mi Cuerpo'", desc: "El perdón que sana y transforma tu relación corporal para siempre.", img: ASSETS.deliverableCarta },
-            ].map((item, i) => (
-              <motion.div 
-                key={i}
-                whileHover={{ y: -10 }}
-                className="flex flex-col overflow-hidden rounded-2xl bg-white/10 backdrop-blur-sm"
-              >
-                <img src={item.img} alt={item.title} className="h-64 w-full object-cover" referrerPolicy="no-referrer" />
-                <div className="p-6">
-                  <h4 className="text-lg font-bold">{item.title}</h4>
-                  <p className="mt-2 text-sm text-white/70">{item.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 10. BONUSES */}
+      {/* 9. BONUSES */}
       <section className="bg-beige-cream px-6 py-20">
         <div className="mx-auto max-w-5xl">
           <h2 className="mb-12 text-center text-3xl font-bold text-purp-deep md:text-4xl">🎁 Bonos Exclusivos (Valor: $97)</h2>
@@ -453,7 +483,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 11. VALUE ANCHOR */}
+      {/* 10. VALUE ANCHOR */}
       <section className="bg-purp-deep px-6 py-20 text-white">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="mb-4 text-3xl font-bold md:text-4xl">💰 El Valor Real de Tu Transformación</h2>
@@ -495,6 +525,12 @@ export default function App() {
           
           <div className="mt-16 flex flex-col items-center">
             <p className="text-xl italic opacity-90">Pero hoy, por ser parte de esta comunidad especial...</p>
+            <img 
+              src="https://i.imgur.com/tgrjx7m.png" 
+              alt="Oferta Especial" 
+              className="mt-8 max-w-md rounded-2xl shadow-2xl" 
+              referrerPolicy="no-referrer" 
+            />
             <CountdownTimer hours={23} />
             <div className="mt-10 flex flex-col items-center justify-center">
               <p className="text-sm font-semibold uppercase tracking-widest text-gold-subtle">Tu inversión es solo</p>
@@ -507,7 +543,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 12. CTA #1 */}
+      {/* 11. CTA #1 */}
       <section className="bg-white px-6 py-20 text-center">
         <div className="mx-auto max-w-4xl">
           <h2 className="mb-12 text-3xl font-bold text-purp-deep">🚀 ¡SÍ, QUIERO TRANSFORMAR MI VIDA HOY!</h2>
@@ -522,6 +558,33 @@ export default function App() {
             <div className="flex items-center gap-2"><CheckCircle2 size={16} className="text-purp-light" /> Descarga directa</div>
           </div>
         </div>
+      </section>
+
+      {/* 12. GUARANTEE */}
+      <section className="bg-beige-cream px-6 py-24 text-center">
+        <motion.div 
+          initial={{ scale: 0.9, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          className="mx-auto max-w-3xl rounded-[2rem] bg-white p-12 shadow-2xl border border-gold-subtle/20"
+        >
+          <div className="mx-auto mb-8 flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-gold-subtle to-gold-subtle/50 p-1 shadow-xl">
+            <div className="flex h-full w-full items-center justify-center rounded-full bg-white">
+              <ShieldCheck size={56} className="text-gold-subtle" />
+            </div>
+          </div>
+          <h2 className="text-3xl font-bold text-purp-deep md:text-4xl">Garantía "Conexión Total" de 7 Días</h2>
+          <p className="mt-8 text-xl leading-relaxed text-text-gray/80">
+            Si en los primeros 7 días no sientes una conexión más profunda contigo misma, te devuelvo cada centavo. <span className="font-bold text-purp-deep">Sin preguntas, sin complicaciones, sin resentimientos.</span>
+          </p>
+          <div className="mt-10 flex flex-col items-center gap-4">
+            <div className="h-px w-20 bg-gold-subtle/30"></div>
+            <p className="font-serif text-2xl italic text-purp-light">
+              "Es mi compromiso personal contigo porque sé que este sistema funciona."
+            </p>
+            <p className="text-sm font-bold uppercase tracking-widest text-text-gray/40">— Vioalma</p>
+          </div>
+        </motion.div>
       </section>
 
       {/* 13. FAQ */}
