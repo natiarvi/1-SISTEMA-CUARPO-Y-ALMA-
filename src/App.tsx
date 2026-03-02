@@ -21,6 +21,7 @@ import {
   Zap,
   Lock
 } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 
 // Assets mapping based on provided images
 const ASSETS = {
@@ -705,6 +706,7 @@ export default function App() {
         <p>© {new Date().getFullYear()} Cuerpo & Alma. Todos los derechos reservados.</p>
         <p className="mt-2">Diseñado con amor para tu despertar espiritual.</p>
       </footer>
+      <Analytics />
     </div>
   );
 }
